@@ -11,3 +11,4 @@ taskmanager-frontend/build/
 .vscode/
 *.iml
 .idea/
+.env*localtaskmanager-frontend/.env*.local
