@@ -1,0 +1,13 @@
+# Backend
+taskmanager-backend/target/
+taskmanager-backend/.mvn/
+*.class
+
+# Frontend
+taskmanager-frontend/node_modules/
+taskmanager-frontend/build/
+
+# IDE
+.vscode/
+*.iml
+.idea/

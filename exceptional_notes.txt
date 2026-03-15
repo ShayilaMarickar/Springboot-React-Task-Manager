@@ -1,0 +1,2 @@
+pom.xml is like package.json
+
