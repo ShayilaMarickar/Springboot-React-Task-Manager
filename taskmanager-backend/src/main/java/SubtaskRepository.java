@@ -3,6 +3,6 @@ package com.taskmanager.taskmanager_backend;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
-public interface TaskRepository extends JpaRepository<Task, Long> {
-    List<Task> findByOwner(User owner);
+public interface SubtaskRepository extends JpaRepository<Subtask, Long> {
+    List<Subtask> findByParentTaskId(Long taskId);
 }

@@ -2,6 +2,7 @@ package com.taskmanager.taskmanager_backend;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import java.util.List;
 
 @RestController
@@ -12,13 +13,23 @@ public class TaskController {
     @Autowired
     private TaskRepository taskRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    private User getCurrentUser() {
+        String email = SecurityContextHolder.getContext()
+                .getAuthentication().getName();
+        return userRepository.findByEmail(email).orElseThrow();
+    }
+
     @GetMapping
     public List<Task> getAllTasks() {
-        return taskRepository.findAll();
+        return taskRepository.findByOwner(getCurrentUser());
     }
 
     @PostMapping
     public Task createTask(@RequestBody Task task) {
+        task.setOwner(getCurrentUser());
         return taskRepository.save(task);
     }
 
