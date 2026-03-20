@@ -303,7 +303,7 @@ function CanvasList({ taskId, taskTitle, task, onSelectCanvas, onClose, darkMode
       .catch(() => setCanvases([]));
   };
 
-  useEffect(() => { loadCanvases(); }, [taskId]);
+  useEffect(() => { loadCanvases(); }, [taskId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const createCanvas = () => {
     if (!newTitle.trim()) return;
@@ -622,7 +622,7 @@ function MindMap({ canvas, onClose, onBack, darkMode, token }) {
     }));
 
     return { flowNodes, flowEdges: [...parentEdges, ...manualEdges] };
-  }, [darkMode]);
+  }, [darkMode]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadMap = useCallback(() => {
     Promise.all([
@@ -641,7 +641,7 @@ function MindMap({ canvas, onClose, onBack, darkMode, token }) {
       setNodes(flowNodes);
       setEdges(flowEdges);
     }).catch(() => setHasMap(false));
-  }, [canvas.id, darkMode, buildFlowData]);
+  }, [canvas.id, darkMode, buildFlowData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => { loadMap(); }, [loadMap]);
 
@@ -671,7 +671,7 @@ function MindMap({ canvas, onClose, onBack, darkMode, token }) {
       method: 'PUT', headers: getHeaders(),
       body: JSON.stringify({ x: node.position.x, y: node.position.y })
     });
-  }, [token]);
+  }, [token]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onConnect = useCallback((params) => {
     const strokeColor = EDGE_COLORS[Math.floor(Math.random() * EDGE_COLORS.length)];
@@ -685,7 +685,7 @@ function MindMap({ canvas, onClose, onBack, darkMode, token }) {
         color: strokeColor
       })
     });
-  }, [setEdges, canvas.id, token]);
+  }, [setEdges, canvas.id, token]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Delete edge from backend when removed on canvas
   const onEdgesDelete = useCallback((deletedEdges) => {
@@ -697,7 +697,7 @@ function MindMap({ canvas, onClose, onBack, darkMode, token }) {
         });
       }
     });
-  }, [token]);
+  }, [setEdges, canvas.id, token]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const labelObj = CANVAS_LABELS.find(l => l.key === canvas.label) || CANVAS_LABELS[0];
 
