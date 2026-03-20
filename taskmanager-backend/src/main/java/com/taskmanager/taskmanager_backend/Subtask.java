@@ -2,15 +2,13 @@ package com.taskmanager.taskmanager_backend;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import java.time.LocalDateTime;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
 @Table(name = "subtasks")
 public class Subtask {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,9 +16,10 @@ public class Subtask {
     private String title;
     private boolean completed = false;
     private LocalDateTime dueDate;
+    private String priority = "normal";
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "task_id")
-    private Task parentTask;
+    @JsonBackReference
+    private Task task;
 }

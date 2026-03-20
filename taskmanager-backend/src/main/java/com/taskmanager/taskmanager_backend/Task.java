@@ -3,7 +3,6 @@ package com.taskmanager.taskmanager_backend;
 import jakarta.persistence.*;
 import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -11,7 +10,6 @@ import java.util.ArrayList;
 @Entity
 @Table(name = "tasks")
 public class Task {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,12 +17,15 @@ public class Task {
     private String title;
     private boolean completed = false;
 
-    @JsonIgnore
+    @Column(columnDefinition = "TEXT")
+    private String notes;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User owner;
 
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL,
+               fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
-    @OneToMany(mappedBy = "parentTask", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Subtask> subtasks = new ArrayList<>();
 }
