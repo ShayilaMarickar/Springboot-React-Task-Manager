@@ -21,21 +21,15 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
-
-      - name: Cache Maven packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
+          cache: 'maven'
 
       - name: Build backend
         working-directory: taskmanager-backend
-        run: ./mvnw clean compile -q
+        run: mvn clean compile -q --no-transfer-progress
 
       - name: Run backend tests
         working-directory: taskmanager-backend
-        run: ./mvnw test -q
+        run: mvn test -q --no-transfer-progress
         env:
           MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
 
@@ -51,14 +45,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: taskmanager-frontend/package-lock.json
 
       - name: Install dependencies
         working-directory: taskmanager-frontend
-        run: npm ci
+        run: npm install
 
       - name: Build frontend
         working-directory: taskmanager-frontend
         run: npm run build
-
