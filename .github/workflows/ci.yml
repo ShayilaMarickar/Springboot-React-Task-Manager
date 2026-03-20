@@ -1,0 +1,64 @@
+name: CI — Build & Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  backend:
+    name: Backend — Spring Boot
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: Build backend
+        working-directory: taskmanager-backend
+        run: ./mvnw clean compile -q
+
+      - name: Run backend tests
+        working-directory: taskmanager-backend
+        run: ./mvnw test -q
+        env:
+          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+
+  frontend:
+    name: Frontend — React
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: taskmanager-frontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: taskmanager-frontend
+        run: npm ci
+
+      - name: Build frontend
+        working-directory: taskmanager-frontend
+        run: npm run build
+

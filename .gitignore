@@ -12,3 +12,8 @@ taskmanager-frontend/build/
 *.iml
 .idea/
 .env*localtaskmanager-frontend/.env*.local
+
+# H2 Database files
+taskmanager-backend/taskdb.mv.db
+taskmanager-backend/taskdb.trace.db
+taskmanager-backend/taskdb.lock.db
