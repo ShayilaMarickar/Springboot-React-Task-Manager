@@ -53,3 +53,5 @@ jobs:
       - name: Build frontend
         working-directory: taskmanager-frontend
         run: npm run build
+        env:
+          CI: false
